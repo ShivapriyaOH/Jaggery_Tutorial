@@ -1,0 +1,7 @@
+AppClient = new function() { 
+this.name = "js"; 
+//jagger code 
+<% var age = 11; %> 
+//getting value for age from jaggery 
+this.age = <%=age%>; 
+}

@@ -1,0 +1,22 @@
+<%
+  var query2  ="INSERT INTO test (character_name, house_name) VALUES('Hermione Granger', 'Gryffindor' );";
+  var query1  ="SELECT * FROM test;";
+
+
+config = {}; 
+  var db = new Database("jdbc:mysql://localhost:3306/mysql", "root", "root", config); 
+try{
+  db.query(query2);
+  var results = db.query(query1); 
+  print("\nContents:");
+  print(results);
+} 
+catch(e){ 
+  print(e.toString()); 
+} 
+finally{ 
+  db.close(); 
+}
+
+
+%>

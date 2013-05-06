@@ -1,0 +1,21 @@
+<html> 
+<header> 
+<script src="util.jag"></script>
+<title> 
+Jaggery M5 
+
+</title> 
+</header> 
+<body> 
+<h1 >jaggery Tutorial</h1> 
+<!--Jaggery Codes--> 
+
+<%
+    var name = 'Shivapriya';
+    print("Hello " + name);
+    var version = "M5" 
+    print ("<h2>"+version+"</h2>"); 
+%>
+<!--end of the Jaggery Codes--> 
+</body> 
+</html>

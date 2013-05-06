@@ -1,0 +1,186 @@
+What is Jaggery.js?
+===================
+
+
+Serverside scripting
+--------------------
+Server-side scripting is used in website design to embed scripts in HTML code so that user’s request to the server can be handled by the script running server-side before the server responds to the client’s request. It is used to provide an interface and to limit client access to databases and other sources. Setting up a Web application today can be a nightmare since all of the different components (UI, back-end, server-side logic etc) are written using different languages. In every step there is a mismatched conversion which leads to a potential loss of information. These platforms are an attempted solution to these problems.
+
+
+Jaggery.js
+----------
+JaggeryJS offers a completely Javascript way to write all parts of Web applications and services as a way to reduce/eliminate impedance mismatches across different layers of the Web application and API development experience.It is a  framework to write webapps and HTTP-focused web services in pure Javascript for all aspects of the application: front-end, communication, Server-side logic and persistence.It closes the gap between Web apps from Web services by allowing one to create both applications and APIs at the same time.
+
+Getting Started
+===============
+
+How to install Jaggery.js?
+--------------------------
+
+- Download the jaggery package from `here <http://jaggeryjs.org/>`_ and extract jaggery-0.9.0-SNAPSHOT_ALPHA3.zip to a directory you prefer. Lets call it JAGGERY_HOME
+- Make sure you have set the environment variable JAVA_HOME to point to your jdk installation
+- Navigate to JAGGERY_HOME/bin directory which contains all the Jaggery execution scripts
+- Run "sh JAGGERY_HOME/bin/server.sh"   (JAGGERY_HOME/bin/server.batin windows) command to start the server
+
+The "Hello World" Jaggery App
+-----------------------------
+- Create a directory called helloapp at {JAGGERY_HOME}/apps/
+- Create a jaggery file helloworld.jag inside the helloapp directory and add the following code snippet ::
+
+	<%
+    		var name = 'Jaggery';
+    		print("Hello " + name);
+	%>
+						
+- Thats it! now point the browser to http://localhost:9763/helloapp/helloworld.jag
+
+.. image:: _static/HelloJaggery.png
+
+API
+============
+
+- We have provided all the basic useful APIs, so that we can build cooler apps using this deliciously new framework
+- The APIs are listed in the `jaggery website <http://jaggeryjs.org/documentation.jag>`_
+
+Built-ins
+----------
+There are a few Built-ins :
+
+- Http Client
+   - `get <http://jaggeryjs.org/apidocs/get.jag>`_
+   - `post <http://jaggeryjs.org/apidocs/post.jag>`_
+   - `put <http://jaggeryjs.org/apidocs/get.jag>`_
+   - `del <http://jaggeryjs.org/apidocs/get.jag>`_ 
+
+- Utils
+   - `URI Matcher <http://jaggeryjs.org/apidocs/urimatcher.jag>`_
+   - `include <http://jaggeryjs.org/apidocs/include.jag>`_
+
+- `Feed <http://jaggeryjs.org/apidocs/feed.jag>`_ 
+
+- `File System <http://jaggeryjs.org/apidocs/file.jag>`_
+
+- `Data Storage <http://jaggeryjs.org/apidocs/rdb.jag>`_
+
+- Data Format 
+   - JSON 
+       - `parse <http://jaggeryjs.org/apidocs/parse.jag>`_
+       - `stringify <http://jaggeryjs.org/apidocs/stringify.jag>`_
+   - `XML <http://jaggeryjs.org/apidocs/xml.jag>`_
+
+Add ons 
+-------
+
+- Email 
+   - `Sender <http://jaggeryjs.org/apidocs/sender.jag>`_
+
+
+- Web Services
+   - `WSRequest <http://jaggeryjs.org/apidocs/ws.jag>`_
+   - `WSStub <http://jaggeryjs.org/apidocs/wsstub.jag>`_
+   
+- Authentication
+   - `OAuth <http://jaggeryjs.org/apidocs/oauth.jag>`_
+
+- Server
+   - `Process <http://jaggeryjs.org/apidocs/process.jag>`_
+
+
+
+A simple application of using MySQL in Jaggery
+============================================
+
+
+Prerequisites:
+- You will need a jdbc driver jar.You can dowload this jar "mysql_connector_java_5.1.10_bin_1.0.0" from `here <http://www.4shared.com/file/ELPzjU5j/mysql_connector_java_5110_bin_.html?>`_
+
+- Paste mysql_connector_java_5.1.10_bin_1.0.0.jar  in {JAGGERY_HOME}\\carbon\\repository\\components\\dropins\\
+
+- Install MySQL 
+
+This post will help you create jaggery App for testing below use cases:
+
+1. Create a table in MySQL from Jaggery code
+
+2. Insert data to the table in MySQL from Jaggery application
+
+3. View the data in MySQL from Jaggery
+
+
+1) Create table in MySQL from Jaggery code
+
+      - Create Application name testmysql (Create Folder 'testmysql' in {JAGGERY_HOME}/apps/)
+
+      - Create test.jag file in 'testmysql' folder
+
+      - Add the below code snippet ::
+
+     
+     	 var query1  ="CREATE TABLE test(character_name varchar(30),house_name(20));"; 
+         config = {}; 
+     	 var db = new Database("jdbc:mysql://localhost:3306/mysql", "root", "root", config); 
+     	 try{
+		db.query(query1); 
+        	print('Created the table'); 
+     	 } 
+	 catch(e){ 
+        	print(e.toString()); 
+     	 } 
+     	 finally{ 
+        	db.close(); 
+     	 }
+     
+
+   Note : Database("jdbc:mysql://<mysql host>:<port>/<database>", "<mysql_username>", "<mysql_password>", config);
+
+
+     - Start Jaggery server and go to ‘http://localhost:9763/testmysql/test.jag’
+
+     - Go to MySQL console and enter 'show tables;'
+
+
+.. image:: _static/create.png
+
+
+2) Insert data to MySQL from jaggery applications
+
+     - Now change query to insert data to table ::
+
+         var query1  ="INSERT INTO test (character_name, house_name) VALUES('Hermione Granger', 'Gryffindor' );";
+
+.. image:: _static/insert.png
+
+3) View the data in MySQL from jaggery
+
+     - We retrieve the data from the database and we will make it print on the jaggery page ::
+
+         var query1  ="SELECT * FROM test;";
+         var results = db.query(query1); 
+         print(results);
+
+     
+
+.. image:: _static/db_output.png
+
+
+Here is the complete code with all the three queries ::
+
+   <%
+	var query1  ="CREATE TABLE IF NOT EXISTS test(character_name varchar(30),house_name(20));";
+	var query2  ="INSERT INTO test (character_name, house_name) VALUES('Hermione Granger', 'Gryffindor' );";
+	var query3  ="SELECT * FROM test;";
+	config = {};
+	var db = new Database("jdbc:mysql://localhost:3306/mysql", "root", "root", config);
+	try{
+		db.query(query1);
+		db.query(query2);
+		var results = db.query(query3);
+		print(results);
+	}
+	catch(e){
+		print(e.toString());
+	}
+	finally{
+		db.close();
+	}
+   %>

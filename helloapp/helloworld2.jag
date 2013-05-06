@@ -1,0 +1,64 @@
+<% 
+    //this url can return either json or html 
+    var accept = request.getHeader("Accept"); 
+    var query2  ="INSERT INTO example (name, age) VALUES($name, '15' );";
+    var query1  ="SELECT * FROM example;";
+
+
+config = {}; 
+        var db = new Database("jdbc:mysql://localhost:3306/test", "root", "root", config); 
+try{
+db.query(query2);
+var results = db.query(query1); 
+print(results);
+print("Conetnts:");
+ 
+} 
+catch(e){ 
+print(e.toString()); 
+} 
+finally{ 
+db.close(); 
+}
+
+
+    if (accept.indexOf("application/json") >= 0) { 
+        // return json 
+        var change = parse(request.getContent()); 
+        print({ 
+            name : change.name ,
+            leet : change.name}); 
+              //                .replace(/[eE]/g,"&euro;") 
+                //              .replace(/[lL]/g,"&pound;") 
+        //}); 
+    } else { 
+        // return html 
+        var name = "M&euro;mb&euro;r of th&euro; Financia&pound; &euro;&pound;it&euro;"; 
+%><html> 
+    <head> 
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script> 
+    <script type="text/javascript"> 
+        $(document).ready(function(){ 
+            // install a handler whenever the newname changes 
+            $("#newname").change(function(event){ 
+                // HTTP post with application/json request type 
+                $.post(    "helloworld2.jag?api", 
+                    JSON.stringify({ name : $(this).val() }), 
+                    function(data) { 
+                        // update html fields with JSON returned from the server 
+                        $("#name").attr("title", data.name).html(data.leet); 
+                    }, 
+                    "json" 
+                ); 
+            }); 
+        }); 
+    </script> 
+    </head> 
+    <body> 
+        <h1>Hello <span id="name"><%=name%></span></h1> 
+        <p>My new name is <input type="text" id="newname"/>.</p> 
+    </body> 
+</html> 
+<% } %>
+
+
